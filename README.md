@@ -1,6 +1,6 @@
 # DriveDiTFit: Fine-tuning Diffusion Transformers for Autonomous Driving.
 ## Introduction
-In autonomous driving, deep models have shown remarkable performance across various visual perception tasks with the demand of high-quality and huge-diversity training datasets. Such datasets are expected to cover various driving scenarios with adverse weather, lighting conditions and diverse moving objects. However, manually collecting these data presents huge challenges and expensive cost. With the rapid development of large generative models, we propose DriveDiTFit, a novel method for efficiently generating autonomous \textbf{Driv}ing data by \textbf{Fi}ne-\textbf{T}uning pre-trained \textbf{Di}ffusion \textbf{T}ransformers (DiTs). Specifically, DriveDiTFit utilizes a gap-driven modulation technique to carefully select and efficiently fine-tune a few of parameters in DiTs according to the discrepancy between the pre-trained source data and the target driving data. Additionally, DriveDiTFit develops an effective weather and lighting condition embedding module to ensure diversity in the generated data, which is initialized by a nearest-semantic-similarity initialization approach. Through progressive tuning scheme to refined the process of detail generation in early diffusion process and enlarging the weights corresponding to small objects in training loss, DriveDiTFit ensures high-quality generation of small moving objects in the generated data. Extensive experiments conducted on driving datasets confirm that our method could efficiently produce diverse real driving data.
+In autonomous driving, deep models have shown remarkable performance across various visual perception tasks with the demand of high-quality and huge-diversity training datasets. Such datasets are expected to cover various driving scenarios with adverse weather, lighting conditions and diverse moving objects. However, manually collecting these data presents huge challenges and expensive cost. With the rapid development of large generative models, we propose DriveDiTFit, a novel method for efficiently generating autonomous **Driv**ing data by **Fi**ne**T**uning pre-trained **Di**ffusion **T**ransformers (DiTs). Specifically, DriveDiTFit utilizes a gap-driven modulation technique to carefully select and efficiently fine-tune a few parameters in DiTs according to the discrepancy between the pre-trained source data and the target driving data. Additionally, DriveDiTFit develops an effective weather and lighting condition embedding module to ensure diversity in the generated data, which is initialized by a nearest-semantic-similarity initialization approach. Through progressive tuning scheme to refined the process of detail generation in early diffusion process and enlarging the weights corresponding to small objects in training loss, DriveDiTFit ensures high-quality generation of small moving objects in the generated data. Extensive experiments conducted on driving datasets confirm that our method could efficiently produce diverse real driving data.
 
 ## Discrpancy between Driving Scenarios and Classification Datasets.
 ![alt text](assets/Discrepancy.jpg)
@@ -35,6 +35,13 @@ The implentation of Diffusion Transformer is based on [DiT](https://github.com/f
 
 Many thanks to its contributors!
 
-<!-- ## BibTex
+## Citation
+If you find our work helpful for your research, please consider citing our work.
+```bibtex
+@article{tu2024driveditfit,
+  title={DriveDiTFit: Fine-tuning Diffusion Transformers for Autonomous Driving},
+  author={Tu, Jiahang and Ji, Wei and Zhao, Hanbin and Zhang, Chao and Zimmermann, Roger and Qian, Hui},
+  journal={arXiv preprint arXiv:2407.15661},
+  year={2024}
+}
 ```
-``` -->
