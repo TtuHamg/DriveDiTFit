@@ -63,7 +63,7 @@ CUDA_VISIBLE_DEVICES=0,1,2,3 torchrun --nnodes=1 --nproc_per_node=4 --master-por
 
 ## Acknolegment
 
-The implentation of Diffusion Transformer is based on [DiT](https://github.com/facebookresearch/DiT) and [DiffFit](https://github.com/mkshing/DiffFit-pytorch).
+The implementation of Diffusion Transformer is based on [DiT](https://github.com/facebookresearch/DiT) and [DiffFit](https://github.com/mkshing/DiffFit-pytorch).
 
 
 Many thanks to its contributors!
