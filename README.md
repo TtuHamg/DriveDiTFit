@@ -20,13 +20,46 @@ In autonomous driving, deep models have shown remarkable performance across vari
 4. cuda 12.2
 
 ### Datasets
-We compare DriveDiTFit and other effecient fine-tuning methods on the [Ithaca365](https://ithaca365.mae.cornell.edu/) dataset and [BDD100K](https://doc.bdd100k.com/download.html) dataset.
+We compare DriveDiTFit and other effecient fine-tuning methods on the [Ithaca365](https://ithaca365.mae.cornell.edu/) dataset and [BDD100K](https://doc.bdd100k.com/download.html) dataset. You can click the link below to download the corresponding dataset:
+
+Ithaca365: [Link](http://en-ma-sdc.coecis.cornell.edu/web_data/Ithaca365-sub.zip), BDD100K: [Link](https://dl.cv.ethz.ch/bdd100k/data/100k_images_train.zip).
+
+Note: Please download the dataset and unzip in ``./datasets``.
+
+## Setup
+
+We provide an [`requirements.txt`](environment.yml) file that can be used to create a Conda environment.
+
+```bash
+cd DriveDitFit
+conda create -n env_name python=3.9
+conda activate env_name
+pip install -r requirements.txt
+```
+
 
 ## Preprocessing
-Coming soon! 
+We provide scripts in ``./sh`` to resize the dataset to 256*256 and split dataset according to the weather and lighting labels. You should **modify the relevant variables** in the script according to the path of your dataset. Then, you can run the revelant scripts to modify the Ithaca365 dataset and BDD100K dataset respectively.
+```bash
+sh ./sh/ithaca_preprocessing.sh
+sh ./sh/bdd_preprocessing.sh
+```
+In order to adopt object-sensitive loss, you can extract vehicles' bounding boxes in advance. We provide the folder organization for box information and offer the process on the Ithaca365 dataset as an example in ``./scripts/extract_boxes.ipynb``.
 
 ## Fine-Tuning
-Coming soon! 
+We provide a tuning script for DiT in [`train.py`](train.py). This script can be used to fine-tune [pre-trained DiT models](https://dl.fbaipublicfiles.com/DiT/models/DiT-XL-2-256x256.pt)with the DriveDitFit method for generating driving data. The pre-trained [VAE](https://huggingface.co/stabilityai/sd-vae-ft-ema) is frozen. We have provided the initialization results of scenario embeddings in **./pretrained_models** using Semantic-Selective Embedding Initialization method. You should specify the path of the driving dataset(--data-path), the path of bounding boxes(--boxes-path), the pre-trained model(--resume-checkpoint, --vae-checkpoint) in ``./sh/train.sh``.
+
+```bash
+CUDA_VISIBLE_DEVICES=0,1,2,3 torchrun --nnodes=1 --nproc_per_node=4 --master-port=11113 train.py --model DiT-XL/2
+--data-path ./datasets/Ithaca365/Ithaca365-scenario --boxes-path ./datasets/box_info  \
+--epochs 3000 --global-batch-size 16 --lr 1e-5 --log-every 50 --ckpt-every 100 \
+--resume-checkpoint ./pretrained_models/DiT-XL-2-256x256.pt \
+--vae-checkpoint ./pretrained_models/sd-vae-ft-ema \
+--embed-checkpoint ./pretrained_models/clip_similarity_embed.pt \
+--dataset_name ithaca365 --training_sample_steps 500 --scenario_num 5 --rank 2 --modulation \
+--cond_mlp_modulation --rope --finetune_depth 28 --mask_rl 2 --noise_schedule progress
+```
+
 
 ## Acknolegment
 
@@ -38,10 +71,10 @@ Many thanks to its contributors!
 ## Citation
 If you find our work helpful for your research, please consider citing our work.
 ```bibtex
-@article{tu2024driveditfit,
-  title={DriveDiTFit: Fine-tuning Diffusion Transformers for Autonomous Driving},
+@article{tudriveditfit,
+  title={DriveDiTFit: Fine-tuning Diffusion Transformers for Autonomous Driving Data Generation},
   author={Tu, Jiahang and Ji, Wei and Zhao, Hanbin and Zhang, Chao and Zimmermann, Roger and Qian, Hui},
-  journal={arXiv preprint arXiv:2407.15661},
-  year={2024}
+  journal={ACM Transactions on Multimedia Computing, Communications and Applications},
+  publisher={ACM New York, NY}
 }
 ```
